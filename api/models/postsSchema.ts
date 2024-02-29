@@ -1,4 +1,4 @@
-import { Schema, model, HydratedDocument } from 'mongoose';
+import mongoose, { Schema, model, HydratedDocument } from 'mongoose';
 import User from './usersSchema';
 import type { IPostFields, IPostModel } from '../types';
 
@@ -24,10 +24,11 @@ const postsSchema = new Schema<IPostFields, IPostModel, unknown>({
 		default: new Date(),
 	},
 	author: {
-		type: Schema.Types.ObjectId,
+		type: mongoose.Types.ObjectId,
 		required: true,
+		ref: 'users',
 		validate: {
-			validator: async (userId: Schema.Types.ObjectId) => {
+			validator: async (userId: mongoose.Types.ObjectId) => {
 				const user = await User.findById(userId);
 				return Boolean(user);
 			},

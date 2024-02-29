@@ -1,14 +1,15 @@
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema, model } from 'mongoose';
 import User from './usersSchema';
 import Post from './postsSchema';
 import { ICommentFields, ICommentModel } from '../types';
 
 const commentsSchema = new Schema<ICommentFields, ICommentModel, unknown>({
 	user: {
-		type: Schema.Types.ObjectId,
+		type: mongoose.Types.ObjectId,
 		required: true,
+		ref: 'users',
 		validate: {
-			validator: async (userId: Schema.Types.ObjectId) => {
+			validator: async (userId: mongoose.Types.ObjectId) => {
 				const user = await User.findById(userId);
 				return Boolean(user);
 			},
@@ -16,10 +17,11 @@ const commentsSchema = new Schema<ICommentFields, ICommentModel, unknown>({
 		},
 	},
 	post: {
-		type: Schema.Types.ObjectId,
+		type: mongoose.Types.ObjectId,
 		required: true,
+		ref: 'posts',
 		validate: {
-			validator: async (postId: Schema.Types.ObjectId) => {
+			validator: async (postId: mongoose.Types.ObjectId) => {
 				const post = await Post.findById(postId);
 				return Boolean(post);
 			},
