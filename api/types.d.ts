@@ -22,3 +22,11 @@ export interface IPostFields {
 }
 
 export type IPostModel = Model<IPostFields, unknown, unknown>;
+
+export interface ICommentFields {
+	user: Schema.Types.ObjectId;
+	post: Schema.Types.ObjectId;
+	text: string;
+}
+
+export type ICommentModel = Model<ICommentFields, unknown, unknown>;
