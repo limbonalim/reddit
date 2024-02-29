@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from 'redux-persist';
+import { usersReducers } from '../feathers/users/usersSlice.ts';
 
 
 const usersPersistConfig = {
@@ -9,7 +10,9 @@ const usersPersistConfig = {
   whitelist: ['user'],
 };
 
-const rootReducer = combineReducers({});
+const rootReducer = combineReducers({
+  users: persistReducer(usersPersistConfig, usersReducers)
+});
 
 export const store = configureStore({
   reducer: rootReducer,
