@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IMyError, IPost } from '../../types';
-import { getPost, getPosts } from './postsThunks.ts';
+import { IMyError, IPost, IValidationError } from '../../types';
+import { createPost, getPost, getPosts } from './postsThunks.ts';
 import { RootState } from '../../app/store.ts';
 
 interface PostsState {
@@ -10,6 +10,8 @@ interface PostsState {
   currentPost: IPost | null;
   isLoadingCurrentPost: boolean;
   currentPostError: IMyError | null;
+  isLoadingCreatePost: boolean;
+  createPostError: IValidationError | null;
 }
 
 const initialState: PostsState = {
@@ -19,6 +21,8 @@ const initialState: PostsState = {
   currentPost: null,
   isLoadingCurrentPost: false,
   currentPostError: null,
+  isLoadingCreatePost: false,
+  createPostError: null
 }
 
 const postsSlice = createSlice({
@@ -35,7 +39,7 @@ const postsSlice = createSlice({
     }).addCase(getPosts.rejected, (state, {payload: error}) => {
       state.isLoading = false;
       state.error = error || null;
-    })
+    });
 
     builder.addCase(getPost.pending, (state) => {
       state.isLoadingCurrentPost = true;
@@ -46,7 +50,17 @@ const postsSlice = createSlice({
     }).addCase(getPost.rejected, (state, {payload: error}) => {
       state.isLoadingCurrentPost = false;
       state.currentPostError = error || null;
-    })
+    });
+
+    builder.addCase(createPost.pending, (state) => {
+      state.isLoadingCreatePost = true;
+      state.createPostError = null;
+    }).addCase(createPost.fulfilled, (state) => {
+      state.isLoadingCreatePost = false;
+    }).addCase(createPost.rejected, (state, {payload: error}) => {
+      state.isLoadingCreatePost = false;
+      state.createPostError = error || null;
+    });
   }
 });
 
@@ -56,5 +70,7 @@ export const selectError = (state: RootState) => state.posts.error;
 export const selectCurrentPost = (state: RootState) => state.posts.currentPost;
 export const selectIsLoadingCurrentPost = (state: RootState) => state.posts.isLoadingCurrentPost;
 export const selectCurrentPostError = (state: RootState) => state.posts.currentPostError;
+export const selectIsLoadingCreatePost = (state: RootState) => state.posts.isLoadingCreatePost;
+export const selectCreatePostError = (state: RootState) => state.posts.createPostError;
 
 export const postsReducer = postsSlice.reducer;
