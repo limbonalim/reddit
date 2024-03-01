@@ -40,3 +40,11 @@ export interface IPost {
     username: string;
   };
 }
+
+export interface IComment {
+  _id: string;
+  user: {
+    username: string;
+  };
+  text: string;
+}

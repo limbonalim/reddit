@@ -5,6 +5,7 @@ import Register from './feathers/users/Register.tsx';
 import NotFound from './components/UI/Not-Found/NotFound.tsx';
 import PostsPage from './feathers/posts/PostsPage.tsx';
 import PostPage from './feathers/posts/PostPage.tsx';
+import PostsForm from './feathers/posts/PostsForm.tsx';
 
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/" element={(<PostsPage/>)}/>
           <Route path="/login" element={(<Login/>)}/>
           <Route path="/register" element={(<Register/>)}/>
+          <Route path="/create_post" element={(<PostsForm/>)}/>
           <Route path="/post/:id" element={(<PostPage/>)}/>
           <Route path="*" element={(<NotFound/>)}/>
         </Routes>

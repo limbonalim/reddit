@@ -33,10 +33,21 @@ commentsRouter.post('/:id', auth, async (req: RequestWithUser, res, next) => {
 	}
 });
 
-commentsRouter.get('/:id', auth, async (req, res, next) => {
+commentsRouter.get('/:id', async (req, res, next) => {
 	try {
-		const comments = await Comment.find({ post: req.params.id });
-		if (comments[0]) {
+		let postId;
+
+		try {
+			postId = new Types.ObjectId(req.params.id as string);
+		} catch {
+			return res.status(404).send({ message: 'Wrong ObjectId!' });
+		}
+		const comments = await Comment.find({ post: postId }).populate(
+			'user',
+			'-_id, username',
+		);
+
+		if (!comments[0]) {
 			return res.status(404).send({ message: 'Comments is not found' });
 		}
 
