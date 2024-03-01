@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Button, Grid, TextField } from '@mui/material';
-import { useAppDispatch } from '../../app/hooks.ts';
+import { Alert, Box, Button, Grid, TextField } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { createComment, getComments } from './commentsThunks.ts';
+import { selectCreateError, selectIsCreateLoading } from './commentsSlice.ts';
 
 
 export interface ICommentForm {
@@ -22,6 +23,8 @@ const CommentsForm: React.FC<Props> = ({user, post}) => {
     text: '',
   });
   const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(selectIsCreateLoading);
+  const error = useAppSelector(selectCreateError);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {value, name} = e.target;
@@ -38,6 +41,7 @@ const CommentsForm: React.FC<Props> = ({user, post}) => {
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
+      {error && <Alert severity="error">{error.message}</Alert>}
       <Grid container direction="column" spacing={1}>
         <Grid item>
           <TextField
@@ -52,7 +56,7 @@ const CommentsForm: React.FC<Props> = ({user, post}) => {
           />
         </Grid>
         <Grid item>
-          <Button type="submit">add comment</Button>
+          <Button type="submit" disabled={isLoading}>add comment</Button>
         </Grid>
       </Grid>
     </Box>

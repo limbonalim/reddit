@@ -1,10 +1,12 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Grid, TextField } from '@mui/material';
+import { Alert, Button, Grid, TextField } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import FileInput from '../../components/UI/FileInput/FileInput.tsx';
 import { selectUser } from '../users/usersSlice.ts';
 import { createPost, getPosts } from './postsThunks.ts';
+import { selectCreatePostError, selectIsLoadingCreatePost } from './postsSlice.ts';
+
 
 export interface IFormPosts {
   title: string;
@@ -20,6 +22,8 @@ const PostsForm = () => {
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isLoading = useAppSelector(selectIsLoadingCreatePost);
+  const error = useAppSelector(selectCreatePostError);
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
@@ -52,6 +56,7 @@ const PostsForm = () => {
 
   return (
     <form onSubmit={onSubmit}>
+      {error && <Alert severity="error">{error.message}</Alert>}
       <Grid container item direction="column" spacing={2}>
         <Grid item>
           <TextField
@@ -86,7 +91,7 @@ const PostsForm = () => {
           />
         </Grid>
         <Grid item>
-          <Button type="submit">Add</Button>
+          <Button type="submit" disabled={isLoading}>Add</Button>
         </Grid>
       </Grid>
     </form>
