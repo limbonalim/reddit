@@ -29,3 +29,14 @@ export interface IUser {
   username: string;
   token: string;
 }
+
+export interface IPost {
+  _id: string;
+  title: string;
+  description?: string;
+  image?: string;
+  createdAt: string;
+  author: {
+    username: string;
+  };
+}

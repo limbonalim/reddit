@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import mongoose from 'mongoose';
+import mongoose, {Types} from 'mongoose';
 import auth, { RequestWithUser } from '../middleware/auth';
 import Post from '../models/postsSchema';
 import { imagesUpload } from '../multer';
@@ -40,14 +40,36 @@ postsRouter.get('/', async (req, res, next) => {
 		let posts;
 
 		if (!token) {
-			posts = await Post.find().select('-description');
+			posts = await Post.find({}, null, { sort: { createdAt: 'desc' } })
+				.select('-description')
+				.populate('author', '-_id, username');
 		} else {
-			posts = await Post.find();
+			posts = await Post.find({}, null, {
+				sort: { createdAt: 'desc' },
+			}).populate('author', '-_id, username');
 		}
 
 		if (!posts[0]) {
 			return res.status(404).send({ message: 'Not found!' });
 		}
+		return res.send(posts);
+	} catch (e) {
+		next(e);
+	}
+});
+
+postsRouter.get('/:id', async (req, res, next) => {
+	try {
+		let postId;
+
+		try {
+			postId = new Types.ObjectId(req.params.id as string);
+		} catch {
+			return res.status(404).send({ message: 'Wrong ObjectId!' });
+		}
+
+		const posts = await Post.findById(postId).populate('author', '-_id, username');
+
 		return res.send(posts);
 	} catch (e) {
 		next(e);
