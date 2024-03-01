@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import mongoose, {Types} from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import auth, { RequestWithUser } from '../middleware/auth';
 import Post from '../models/postsSchema';
 import { imagesUpload } from '../multer';
@@ -37,17 +37,12 @@ postsRouter.get('/', async (req, res, next) => {
 	try {
 		const headerValue = req.get('Authorization');
 		const [_bearer, token] = headerValue ? headerValue.split(' ') : '';
-		let posts;
 
-		if (!token) {
-			posts = await Post.find({}, null, { sort: { createdAt: 'desc' } })
-				.select('-description')
-				.populate('author', '-_id, username');
-		} else {
-			posts = await Post.find({}, null, {
-				sort: { createdAt: 'desc' },
-			}).populate('author', '-_id, username');
-		}
+		const posts = await Post.find({}, null, {
+			sort: { createdAt: 'desc' },
+		})
+			.select('-description')
+			.populate('author', '-_id, username');
 
 		if (!posts[0]) {
 			return res.status(404).send({ message: 'Not found!' });
@@ -68,7 +63,10 @@ postsRouter.get('/:id', async (req, res, next) => {
 			return res.status(404).send({ message: 'Wrong ObjectId!' });
 		}
 
-		const posts = await Post.findById(postId).populate('author', '-_id, username');
+		const posts = await Post.findById(postId).populate(
+			'author',
+			'-_id, username',
+		);
 
 		return res.send(posts);
 	} catch (e) {

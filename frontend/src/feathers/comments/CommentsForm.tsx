@@ -56,7 +56,7 @@ const CommentsForm: React.FC<Props> = ({user, post}) => {
           />
         </Grid>
         <Grid item>
-          <Button type="submit" disabled={isLoading}>add comment</Button>
+          <Button type="submit" disabled={isLoading} color="primary" variant="contained">add comment</Button>
         </Grid>
       </Grid>
     </Box>

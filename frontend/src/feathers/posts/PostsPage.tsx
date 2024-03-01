@@ -18,8 +18,8 @@ const PostsPage = () => {
     dispatch(getPosts());
   }, [dispatch, user]);
 
-  const render = posts.map(({_id, title, description, image, createdAt, author}) => (
-    <PostItem key={_id} _id={_id} title={title} description={description} image={image} createdAt={createdAt}
+  const render = posts.map(({_id, title, image, createdAt, author}) => (
+    <PostItem key={_id} _id={_id} title={title} image={image} createdAt={createdAt}
               author={author}/>
   ));
 

@@ -45,14 +45,14 @@ const PostPage = () => {
   return isLoading ? <Loader/> : (
     <Box>
       {error && <Alert severity="error">{error.message}</Alert>}
-      <Box sx={{mb: 2}}>{photo}</Box>
       <Box>
         <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 3}}>
           <Box>
             <Typography variant="h3">{post?.title}</Typography>
+            <Box sx={{mb: 2}}>{photo}</Box>
             <Typography sx={{flexGrow: 1}}>{post?.description}</Typography>
           </Box>
-          <Box>
+          <Box sx={{display: 'flex', gap: 1}}>
             <Typography>{post?.author.username}</Typography>
             <Typography color="gray">{new FormatDate(date).getFormatDate()}</Typography>
           </Box>

@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, Button, Grid, TextField } from '@mui/material';
+import { Alert, Grid, IconButton, TextField } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import FileInput from '../../components/UI/FileInput/FileInput.tsx';
 import { selectUser } from '../users/usersSlice.ts';
@@ -91,7 +92,10 @@ const PostsForm = () => {
           />
         </Grid>
         <Grid item>
-          <Button type="submit" disabled={isLoading}>Add</Button>
+          <IconButton type="submit" disabled={isLoading} aria-label="add post" size="large" color='inherit'>
+            Add Post
+            <AddIcon fontSize="inherit"/>
+          </IconButton>
         </Grid>
       </Grid>
     </form>

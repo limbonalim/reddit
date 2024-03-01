@@ -7,7 +7,7 @@ type Props = Omit<IComment, '_id'>;
 
 const CommentItem: React.FC<Props> = ({text, user}) => {
   return (
-    <Box>
+    <Box sx={{border: '1px solid blue', borderRadius: 1, padding: 1}}>
       <Typography>{text}</Typography>
       <Typography color="gray">{user.username}</Typography>
     </Box>
